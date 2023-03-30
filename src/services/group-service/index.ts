@@ -1,13 +1,16 @@
 import groupRepository from "@/repositories/group-repository";
+import { notFoundError } from "@/errors/not-found-error";
 
-
-async function getGroups(){
-    const groups = await groupRepository.getAllGroups();
-    return groups;
+async function getGroups() {
+ const groups = await groupRepository.getAllGroups();
+ if (!groups) {
+  throw notFoundError();
+ }
+ return groups;
 }
 
 const groupService = {
-    getGroups
-}
+ getGroups,
+};
 
 export default groupService;

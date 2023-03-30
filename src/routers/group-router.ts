@@ -3,6 +3,6 @@ import { getGroups } from "@/controllers";
 
 const groupRoutes = Router();
 
-groupRoutes.get("", getGroups);
+groupRoutes.get("/", getGroups);
 
 export { groupRoutes };

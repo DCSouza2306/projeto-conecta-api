@@ -1,7 +1,7 @@
 import { prisma } from "@/config";
 
 async function getAllGroups(){
-    return prisma.group.findMany()
+    return prisma.group.findMany();
 }
 
 const groupRepository = {

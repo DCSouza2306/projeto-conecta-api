@@ -7,6 +7,6 @@ export async function getGroups(req: Request, res: Response) {
   const groups = await groupService.getGroups();
   res.status(httpStatus.OK).send(groups);
  } catch (error) {
-  res.sendStatus(httpStatus.NOT_FOUND);
+  res.status(httpStatus.NOT_FOUND).send(error)
  }
 }
