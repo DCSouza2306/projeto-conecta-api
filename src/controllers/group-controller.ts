@@ -7,6 +7,16 @@ export async function getGroups(req: Request, res: Response) {
   const groups = await groupService.getGroups();
   res.status(httpStatus.OK).send(groups);
  } catch (error) {
-  res.status(httpStatus.NOT_FOUND).send(error)
+  res.status(httpStatus.NOT_FOUND).send(error);
+ }
+}
+
+export async function getGroupById(req: Request, res: Response) {
+ const { groupId } = req.params;
+ try{
+    const group = await groupService.getGroupById(parseInt(groupId))
+    res.status(httpStatus.OK).send(group)
+ } catch(error){
+    res.status(httpStatus.NOT_FOUND).send(error);
  }
 }
