@@ -6,7 +6,7 @@ async function getBooks(skip: number, take: number){
         take,
         include: {
             Author: true
-        }
+        },
     });
 }
 

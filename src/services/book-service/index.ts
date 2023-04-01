@@ -1,9 +1,7 @@
 import { notFoundError } from "@/errors/not-found-error";
 import bookRepository from "@/repositories/book-repository";
 
-async function getBooks(page: number){
-    const take = 2;
-    const skip = (page - take) + page;
+async function getBooks(take: number, skip: number){
     const data = await bookRepository.getBooks(skip, take);
     if(!data){
         throw notFoundError()
