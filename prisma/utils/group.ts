@@ -14,10 +14,10 @@ export function groupData(num: number) {
  for (let i = 0; i < num; i++) {
   data.push({
     name: faker.lorem.words(2),
-    about: faker.lorem.sentence(10),
-    description: faker.lorem.paragraph(),
+    about: faker.lorem.paragraph(),
+    description: faker.lorem.sentence(),
     status: "OPEN",
-    urlImage:faker.internet.avatar(),
+    urlImage:faker.image.abstract(),
   });
  }
 

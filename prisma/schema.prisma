@@ -24,18 +24,21 @@ model Book {
   updatedAt DateTime?  @db.Timestamp(6)
   urlImage  String
   Author    Author     @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Book_fk0")
+  BookLink  BookLink[]
   BookList  BookList[]
   BookVote  BookVote[]
-  Link      Link[]
 }
 
 model BookList {
-  id            Int         @id(map: "BookList_pk") @default(autoincrement())
+  id            Int          @id(map: "BookList_pk") @default(autoincrement())
   readingListId Int
   bookId        Int
-  createdAt     DateTime?   @default(now()) @db.Timestamp(6)
-  Book          Book        @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk1")
-  ReadingList   ReadingList @relation(fields: [readingListId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk0")
+  createdAt     DateTime?    @default(now()) @db.Timestamp(6)
+  status        BookListType
+  finishAt      DateTime     @db.Timestamp(6)
+  startAt       DateTime     @db.Timestamp(6)
+  Book          Book         @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk1")
+  ReadingList   ReadingList  @relation(fields: [readingListId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk0")
 }
 
 model BookVote {
@@ -58,18 +61,11 @@ model Group {
   createdAt   DateTime?     @default(now()) @db.Timestamp(6)
   updatedAt   DateTime?     @db.Timestamp(6)
   urlImage    String
+  GroupLink   GroupLink[]
   GroupMember GroupMember[]
   ListVote    ListVote[]
   Meeting     Meeting[]
   ReadingList ReadingList[]
-}
-
-model Link {
-  id        Int       @id(map: "Link_pk") @default(autoincrement())
-  url       String
-  bookId    Int
-  createdAt DateTime? @default(now()) @db.Timestamp(6)
-  Book      Book      @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Link_fk0")
 }
 
 model ListVote {
@@ -84,15 +80,16 @@ model ListVote {
 }
 
 model Meeting {
-  id          Int       @id(map: "Meeting_pk") @default(autoincrement())
-  url         String    @db.VarChar(255)
+  id          Int               @id(map: "Meeting_pk") @default(autoincrement())
+  url         String            @db.VarChar(255)
   description String
-  date        DateTime  @db.Time(6)
-  hour        DateTime  @db.Time(6)
+  hour        DateTime          @db.Time(6)
   groupId     Int
-  createdAt   DateTime? @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime? @db.Timestamp(6)
-  Group       Group     @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Meeting_fk0")
+  createdAt   DateTime?         @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime?         @db.Timestamp(6)
+  date        DateTime          @db.Timestamp(6)
+  status      MeetingStatusType
+  Group       Group             @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Meeting_fk0")
 }
 
 model ReadingList {
@@ -130,6 +127,22 @@ model GroupMember {
   User      User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Registration_fk0")
 }
 
+model BookLink {
+  id        Int       @id(map: "Link_pk") @default(autoincrement())
+  url       String
+  bookId    Int
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  Book      Book      @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Link_fk0")
+}
+
+model GroupLink {
+  id        Int      @id @default(autoincrement())
+  url       String   @db.VarChar(255)
+  groupId   Int
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  Group     Group    @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 enum GroupStatus {
   OPEN
   CLOSED
@@ -145,4 +158,15 @@ enum PositionType {
   OWNER
   MEMBER
   OFFICER
+}
+
+enum BookListType {
+  CURRENT
+  READ
+  NEXT
+}
+
+enum MeetingStatusType {
+  DONE
+  COMING
 }

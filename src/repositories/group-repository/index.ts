@@ -9,8 +9,25 @@ async function getGroupById(id: number) {
   where: { id },
   include: {
     Meeting: true,
-    ReadingList: true,
-    GroupMember: true
+    ReadingList: {
+      include: {
+        BookList: {
+          include:{
+            Book: {
+              include:{
+                Author: true,
+              }
+            }
+          }
+        }
+      }
+    },
+    GroupMember: {
+      include: {
+        User: true,
+      }
+    },
+    GroupLink: true
   }
  });
 }
