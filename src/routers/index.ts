@@ -1,1 +1,2 @@
-export * from "./group-router";
+export * from "./group-routes";
+export * from "./book-routes";
