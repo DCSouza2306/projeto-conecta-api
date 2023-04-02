@@ -1,7 +1,11 @@
 import { notFoundError } from "@/errors/not-found-error";
 import bookRepository from "@/repositories/book-repository";
+import { invalidQueryError } from "./invalid-query-error";
 
 async function getBooks(take: number, skip: number){
+    if(take < 0 || skip < 0){
+        throw invalidQueryError()
+    }
     const data = await bookRepository.getBooks(skip, take);
     if(!data){
         throw notFoundError()
@@ -28,9 +32,19 @@ async function getBooksCount(){
     return count;
 }
 
+async function getBookById(id: number){
+    const book = await bookRepository.getBookById(id);
+    if(!book){
+        throw notFoundError();
+    }
+
+    return book;
+}
+
 const bookService = {
     getBooks,
-    getBooksCount
+    getBooksCount,
+    getBookById
 };
 
 export default bookService;
