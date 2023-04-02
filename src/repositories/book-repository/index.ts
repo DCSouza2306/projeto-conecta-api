@@ -10,8 +10,13 @@ async function getBooks(skip: number, take: number){
     });
 }
 
+async function booksCount(){
+    return prisma.book.count()
+}
+
 const bookRepository = {
-    getBooks
+    getBooks,
+    booksCount
 }
 
 export default bookRepository;

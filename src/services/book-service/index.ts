@@ -19,8 +19,18 @@ async function getBooks(take: number, skip: number){
     return books;
 }
 
+async function getBooksCount(){
+    const count = await bookRepository.booksCount();
+    if(!count) {
+        throw notFoundError()
+    };
+
+    return count;
+}
+
 const bookService = {
-    getBooks
+    getBooks,
+    getBooksCount
 };
 
 export default bookService;

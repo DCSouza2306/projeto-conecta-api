@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getBooks } from "@/controllers";
+import { getBooks, getBooksCount } from "@/controllers";
 
 const bookRoutes = Router();
 
-bookRoutes.get("/", getBooks);
+bookRoutes.get("/", getBooks).get("/count",getBooksCount)
 
 export { bookRoutes };
