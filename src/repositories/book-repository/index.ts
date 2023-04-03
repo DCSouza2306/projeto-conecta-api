@@ -17,6 +17,18 @@ async function booksCount() {
 async function getBookById(id: number) {
  return prisma.book.findFirst({
   where: { id },
+  include: {
+    Author: true,
+    BookList: {
+        include: {
+            ReadingList: {
+                include: {
+                    Group: true
+                }
+            }
+        }
+    }
+  }
  });
 }
 

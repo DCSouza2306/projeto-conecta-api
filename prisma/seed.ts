@@ -4,8 +4,11 @@ import { userData } from "./utils/user";
 import { groupData } from "./utils/group";
 import { authorData } from "./utils/author";
 import { bookData } from "./utils/book";
-import { bookListData } from "./utils/bookList";
+import { bookListData } from "./utils/book-list";
+import { groupMemberData } from "./utils/group-member";
 import dayjs from "dayjs";
+import { readingListData } from "./utils/reading-list";
+import { meetingData } from "./utils/meeting";
 
 const prisma = new PrismaClient();
 
@@ -13,11 +16,13 @@ async function main() {
  let groups = await prisma.group.findFirst();
  let books = await prisma.book.findFirst();
 
- const numAuthors = 10;
- const numBooks = 10;
- const numGroups = 2;
- const numUsers = 4;
+ const numAuthors = 30;
+ const numBooks = 30;
+ const numGroups = 6;
+ const numUsers = 16;
  const numBooksInList = 4;
+ const numGroupsWithMembers = 4;
+ const numMaxMembersInGroup = 8;
 
  if (!books) {
   await prisma.author.createMany({
@@ -31,7 +36,7 @@ async function main() {
   });
  }
 
-  if (!groups) {
+ if (!groups) {
   //Create groups
   await prisma.group.createMany({
    data: groupData(numGroups),
@@ -42,63 +47,35 @@ async function main() {
    data: userData(numUsers),
   });
 
-  const user = await prisma.user.findMany();
-  const group = await prisma.group.findMany();
+  const users = await prisma.user.findMany();
+  const groups = await prisma.group.findMany();
   const books = await prisma.book.findMany();
 
-  //Adding members and owner do first group in list only
+  //Adding members, owner and officers to groups
   await prisma.groupMember.createMany({
-   data: [
-    {
-     userId: user[0].id,
-     groupId: group[0].id,
-     message: faker.lorem.sentence(),
-     position: "OWNER",
-     status: "APROVED",
-    },
-    {
-     userId: user[1].id,
-     groupId: group[0].id,
-     message: faker.lorem.sentence(),
-     position: "MEMBER",
-     status: "APROVED",
-    },
-    {
-     userId: user[2].id,
-     groupId: group[0].id,
-     message: faker.lorem.sentence(),
-     position: "OFFICER",
-     status: "APROVED",
-    },
-   ],
+   data: groupMemberData(
+    numGroupsWithMembers,
+    groups,
+    users,
+    numMaxMembersInGroup
+   ),
   });
 
-  //Create a reading list for the first group
-  const readingList = await prisma.readingList.create({
-    data:{
-      description: faker.lorem.sentence(8),
-      name: faker.lorem.word(),
-      groupId: group[0].id
-    }
-  })
+  //Create a reading lists for groups with members
+  await prisma.readingList.createMany({
+   data: readingListData(groups)
+  });
+
+  const readingLists = await prisma.readingList.findMany()
 
   //Adding books to the reading list
   await prisma.bookList.createMany({
-    data: bookListData(numBooksInList, books, readingList.id)
-  })
+   data: bookListData(numBooksInList, books, readingLists),
+  });
 
-  await prisma.meeting.create({
-    data: {
-      date: dayjs().set("date", 25).set("month", 0).toDate(),
-      description: faker.lorem.sentence(),
-      hour: dayjs().set("date", 25).set("month", 0).set("hour",20).set("minutes", 0).set("seconds",0).toDate(),
-      status: "COMING",
-      url: faker.internet.url(),
-      groupId: group[0].id
-    }
-  })
-
-
+  await prisma.meeting.createMany({
+   data: meetingData(numGroupsWithMembers, groups)
+  });
  }
 }
 

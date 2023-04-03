@@ -17,7 +17,7 @@ export function bookData(num: number, authors: Author[]) {
     title: faker.random.word(),
     synopsis: faker.lorem.paragraph(),
     authorId: faker.datatype.number({min:authors[0].id, max: authors[authors.length - 1].id}),
-    urlImage: faker.image.image()
+    urlImage: faker.internet.avatar()
   });
  }
 

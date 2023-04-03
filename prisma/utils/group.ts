@@ -17,7 +17,7 @@ export function groupData(num: number) {
     about: faker.lorem.paragraph(),
     description: faker.lorem.sentence(),
     status: "OPEN",
-    urlImage:faker.image.abstract(),
+    urlImage:faker.internet.avatar(),
   });
  }
 

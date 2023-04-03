@@ -38,7 +38,30 @@ async function getBookById(id: number){
         throw notFoundError();
     }
 
-    return book;
+    const groups = book.BookList.map((e) => {
+        return {
+            id: e.ReadingList.Group.id,
+            name: e.ReadingList.Group.name,
+            groupStatus: e.ReadingList.Group.status,
+            readingStatus: e.status,
+            startReading: e.startAt
+        }
+    })
+
+    const currentReadings = groups.filter((e) => e.readingStatus === "CURRENT");
+    const nextReadings = groups.filter((e) =>  e.readingStatus === "NEXT");
+
+    const data = {
+        id: book.id,
+        title: book.title,
+        synopsis: book.synopsis,
+        urlImage: book.urlImage,
+        author: book.Author.name,
+        CurrentReadings: currentReadings,
+        NextReadings: nextReadings
+    }
+
+    return data;
 }
 
 const bookService = {
