@@ -42,6 +42,7 @@ async function getBookById(id: number){
         return {
             id: e.ReadingList.Group.id,
             name: e.ReadingList.Group.name,
+            urlImage: e.ReadingList.Group.urlImage,
             groupStatus: e.ReadingList.Group.status,
             readingStatus: e.status,
             startReading: e.startAt

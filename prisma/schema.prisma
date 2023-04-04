@@ -80,16 +80,17 @@ model ListVote {
 }
 
 model Meeting {
-  id          Int               @id(map: "Meeting_pk") @default(autoincrement())
-  url         String            @db.VarChar(255)
-  description String
-  hour        DateTime          @db.Time(6)
-  groupId     Int
-  createdAt   DateTime?         @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime?         @db.Timestamp(6)
-  date        DateTime          @db.Timestamp(6)
-  status      MeetingStatusType
-  Group       Group             @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Meeting_fk0")
+  id                 Int                  @id(map: "Meeting_pk") @default(autoincrement())
+  url                String               @db.VarChar(255)
+  description        String
+  hour               DateTime             @db.Time(6)
+  groupId            Int
+  createdAt          DateTime?            @default(now()) @db.Timestamp(6)
+  updatedAt          DateTime?            @db.Timestamp(6)
+  date               DateTime             @db.Timestamp(6)
+  status             MeetingStatusType
+  Group              Group                @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Meeting_fk0")
+  MeetingParticipant MeetingParticipant[]
 }
 
 model ReadingList {
@@ -104,14 +105,15 @@ model ReadingList {
 }
 
 model User {
-  id          Int           @id(map: "User_pk") @default(autoincrement())
-  email       String        @unique @db.VarChar(255)
-  user        String        @unique @db.VarChar(255)
-  password    String        @db.VarChar(255)
-  createdAt   DateTime?     @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime?     @db.Timestamp(6)
-  urlImage    String
-  GroupMember GroupMember[]
+  id                 Int                  @id(map: "User_pk") @default(autoincrement())
+  email              String               @unique @db.VarChar(255)
+  user               String               @unique @db.VarChar(255)
+  password           String               @db.VarChar(255)
+  createdAt          DateTime?            @default(now()) @db.Timestamp(6)
+  updatedAt          DateTime?            @db.Timestamp(6)
+  urlImage           String
+  GroupMember        GroupMember[]
+  MeetingParticipant MeetingParticipant[]
 }
 
 model GroupMember {
@@ -139,8 +141,18 @@ model GroupLink {
   id        Int      @id @default(autoincrement())
   url       String   @db.VarChar(255)
   groupId   Int
-  createdAt DateTime @default(now()) @db.Timestamp(6)
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
   Group     Group    @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model MeetingParticipant {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  meetingId Int
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt DateTime?  @db.Timestamp(6)
+  Meeting   Meeting   @relation(fields: [meetingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum GroupStatus {

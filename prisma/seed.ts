@@ -20,7 +20,7 @@ async function main() {
  const numBooks = 30;
  const numGroups = 6;
  const numUsers = 16;
- const numBooksInList = 4;
+ const numBooksInList = 5;
  const numGroupsWithMembers = 4;
  const numMaxMembersInGroup = 8;
 

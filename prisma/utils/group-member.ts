@@ -29,32 +29,40 @@ export function groupMemberData(
     j < faker.datatype.number({ min: 1, max: numMembersGroup });
     j++
    ) {
+    const allUsers = users;
+    const index = faker.datatype.number({min:0, max: users.length - 1})
     if (j === 0) {
      data.push({
       groupId: groups[i].id,
-      userId: users[faker.datatype.number({min:0, max: users.length - 1})].id,
+      userId: allUsers[index].id,
       position: "OWNER",
       message: faker.lorem.sentence(),
       status: "APROVED",
      });
+
+     allUsers.splice(index,1)
     }
     if (j === 1) {
      data.push({
       groupId: groups[i].id,
-      userId: users[faker.datatype.number({min:0, max: users.length - 1})].id,
+      userId: allUsers[index].id,
       position: "OFFICER",
       message: faker.lorem.sentence(),
       status: "APROVED",
      });
+
+     allUsers.splice(index,1)
     }
     if (j > 1) {
      data.push({
       groupId: groups[i].id,
-      userId: users[faker.datatype.number({min:0, max: users.length - 1})].id,
+      userId: allUsers[index].id,
       position: "MEMBER",
       message: faker.lorem.sentence(),
       status: "APROVED",
      });
+
+     allUsers.splice(index,1)
     }
    }
   }
