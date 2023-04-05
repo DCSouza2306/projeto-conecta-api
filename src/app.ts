@@ -3,7 +3,7 @@ import { connectDb, disconnectDB, loadEnv } from "@/config";
 import cors from "cors";
 import { Express } from "express";
 
-import { bookRoutes, groupRoutes } from "@/routers";
+import { bookRoutes, groupRoutes, userRoutes } from "@/routers";
 
 loadEnv();
 
@@ -12,7 +12,8 @@ const app = express();
 app.use(cors())
 .use(express.json())
 .use("/group", groupRoutes)
-.use("/books", bookRoutes);
+.use("/books", bookRoutes)
+.use("/user", userRoutes);
 
 export function init(): Promise<Express> {
  connectDb();
