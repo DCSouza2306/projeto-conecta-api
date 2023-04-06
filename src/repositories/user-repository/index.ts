@@ -1,7 +1,7 @@
 import { CreateUserParams } from "@/services";
 import { prisma } from "@/config";
 
-async function signUp(params: CreateUserParams) {
+async function create(params: CreateUserParams) {
  return prisma.user.create({
   data: params,
  });
@@ -21,7 +21,7 @@ async function findByEmail(email: string) {
    
 
 const userRepository = {
- signUp,
+ create,
  findByUserName,
  findByEmail
 

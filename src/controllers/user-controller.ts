@@ -7,8 +7,11 @@ export async function signUp(req: Request, res: Response){
     const body = req.body as CreateUserParams;
     try{
         const data = await userService.signUp(body);
-        res.status(httpStatus.OK).send(data)
+        res.status(httpStatus.CREATED).send(data)
     } catch(err){
-        res.sendStatus(httpStatus.BAD_REQUEST)
+        if(err.name === "DuplicatedEmailOrUserError"){
+           return res.status(httpStatus.CONFLICT).send(err)
+        }
+        res.status(httpStatus.BAD_REQUEST).send(err)
     }
 }

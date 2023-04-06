@@ -1,11 +1,7 @@
 import faker from "@faker-js/faker";
+import { User } from "@prisma/client";
 
-type UserType = {
-    email: string,
-    password: string,
-    user: string,
-    urlImage: string,
-}[]
+type UserType = Omit<User, "id" | "createdAt" | "updatedAt">[]
 
 export function userData(num: number) {
  const data: UserType = [];
@@ -14,7 +10,7 @@ export function userData(num: number) {
   data.push({
    email: faker.internet.email(),
    password: faker.internet.password(),
-   user: faker.internet.domainName(),
+   userName: faker.internet.domainName(),
    urlImage: faker.internet.avatar(),
   });
  }

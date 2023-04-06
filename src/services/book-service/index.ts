@@ -1,15 +1,12 @@
 import { notFoundError } from "@/errors/not-found-error";
 import bookRepository from "@/repositories/book-repository";
-import { invalidQueryError } from "./invalid-query-error";
+import { invalidQueryError } from "./errors";
 
 async function getBooks(take: number, skip: number){
     if(take < 0 || skip < 0){
-        throw invalidQueryError()
+        throw invalidQueryError();
     }
     const data = await bookRepository.getBooks(skip, take);
-    if(!data){
-        throw notFoundError()
-    };
 
     const books = data.map((e) => {
         return {
@@ -25,9 +22,6 @@ async function getBooks(take: number, skip: number){
 
 async function getBooksCount(){
     const count = await bookRepository.booksCount();
-    if(!count) {
-        throw notFoundError()
-    };
 
     return count;
 }

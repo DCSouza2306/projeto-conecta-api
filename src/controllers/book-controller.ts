@@ -8,14 +8,16 @@ export async function getBooks(req: Request, res: Response) {
   limit = "7";
  }
 
- if (!offset || parseInt(offset) < 0) {
+ if (!offset) {
   offset = "0";
  }
  try {
   const books = await bookService.getBooks(parseInt(limit), parseInt(offset));
   res.status(httpStatus.OK).send(books);
  } catch (err) {
-  console.log(err);
+   if(err.name === "InvalidQueryError"){
+      return res.status(httpStatus.BAD_REQUEST).send(err)
+   }
   res.sendStatus(httpStatus.NOT_FOUND);
  }
 }
@@ -25,13 +27,6 @@ export async function getBooksCount(req: Request, res: Response) {
   const count = await bookService.getBooksCount();
   res.status(httpStatus.OK).send({ count });
  } catch (err) {
-  if (err.name === "InvalidQuery") {
-   res.sendStatus(httpStatus.BAD_REQUEST);
-  }
-  if (err.name === "NotFoundError") {
-   res.sendStatus(httpStatus.NOT_FOUND);
-  }
-
   res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
  }
 }

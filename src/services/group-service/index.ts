@@ -3,28 +3,26 @@ import { notFoundError } from "@/errors/not-found-error";
 
 async function getGroups() {
  const groups = await groupRepository.getAllGroups();
- if (!groups) {
-  throw notFoundError();
- }
  return groups;
 }
 
 async function getGroupById(id: number) {
  const group = await groupRepository.getGroupById(id);
  if (!group) {
+   console.log("entrou aqui?")
   throw notFoundError();
  }
 
  const members = group.GroupMember.map((e) => {
   return {
    id: e.User.id,
-   name: e.User.user,
+   name: e.User.userName,
    urlImage: e.User.urlImage,
    position: e.position,
   };
  });
 
- const readingList = group.ReadingList[0].BookList?.map((e) => {
+ const readingList = group.ReadingList[0]?.BookList?.map((e) => {
     return {
         id: e.bookId,
         title: e.Book.title,
@@ -37,13 +35,13 @@ async function getGroupById(id: number) {
     }
  })
 
- const nextReadings = readingList.filter((e) => e.status == "NEXT");
+ const nextReadings = readingList?.filter((e) => e.status == "NEXT");
 
- const currentReading = readingList.filter((e) => e.status == "CURRENT");
+ const currentReading = readingList?.filter((e) => e.status == "CURRENT");
 
- const meeting = group.Meeting.filter((e) => e.status == "COMING");
+ const meeting = group.Meeting?.filter((e) => e.status == "COMING");
 
- const links = group.GroupLink.map((e) => {
+ const links = group.GroupLink?.map((e) => {
    return{
       url: e.url
    }
@@ -57,9 +55,9 @@ async function getGroupById(id: number) {
     urlImage: group.urlImage,
     status: group.status,
     Members: members,
-    NextReadings: nextReadings,
-    CurrentReading: currentReading[0] || {},
-    Meeting: meeting[0] || {},
+    NextReadings: !nextReadings ? [] : nextReadings,
+    CurrentReading: !currentReading ? {} : currentReading[0],
+    Meeting: meeting.length === 0 ? {} : meeting[0],
     Links: links
  }
 }

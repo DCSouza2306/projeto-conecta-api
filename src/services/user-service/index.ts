@@ -1,26 +1,37 @@
 import { User } from "@prisma/client";
 import userRepository from "@/repositories/user-repository";
-import { duplicatedUserOrEmail } from "./duplicated-user-email-error";
+import { duplicatedUserOrEmail } from "./errors";
+import bcrypt from "bcrypt";
 
 export type CreateUserParams = Omit<User, "id" | "createdAt" | "updatedAt">;
 
 async function signUp(params: CreateUserParams) {
  await validateEmailAndUserName(params);
 
- const response = await userRepository.signUp(params);
+ const { password } = params;
 
- return response;
+ const hashedPassword = bcrypt.hashSync(password, 12);
+
+ const response = await userRepository.create({
+  ...params,
+  password: hashedPassword,
+ });
+
+ return {
+    id: response.id,
+    user: response.userName
+ };
 }
 
 async function validateEmailAndUserName(params: CreateUserParams) {
  const { userName, email } = params;
- let data = await userRepository.findByUserName(userName);
- if (data) {
+ const userNameFind = await userRepository.findByUserName(userName);
+ if (userNameFind) {
   throw duplicatedUserOrEmail("user name");
  }
 
- data = await userRepository.findByEmail(email);
- if (data) {
+ const emailFind = await userRepository.findByEmail(email);
+ if (emailFind) {
   throw duplicatedUserOrEmail("email");
  }
 }
