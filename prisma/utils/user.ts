@@ -12,6 +12,7 @@ export function userData(num: number) {
    password: faker.internet.password(),
    userName: faker.internet.domainName(),
    urlImage: faker.internet.avatar(),
+   about: faker.lorem.sentence()
   });
  }
 

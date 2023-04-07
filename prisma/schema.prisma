@@ -101,6 +101,7 @@ model User {
   updatedAt          DateTime?            @db.Timestamp(6)
   urlImage           String
   userName           String               @unique(map: "User_user_key") @db.VarChar(255)
+  about              String?              @db.VarChar
   GroupMember        GroupMember[]
   MeetingParticipant MeetingParticipant[]
 }

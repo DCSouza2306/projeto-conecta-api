@@ -15,3 +15,14 @@ export async function signUp(req: Request, res: Response){
         res.status(httpStatus.BAD_REQUEST).send(err)
     }
 }
+
+export async function getUser(req: Request, res: Response){
+    const {userName} = req.params;
+
+    try {
+        const user = await userService.getUser(userName);
+        res.status(httpStatus.OK).send(user)
+    } catch (error) {
+        res.sendStatus(httpStatus.NOT_FOUND)
+    }
+}

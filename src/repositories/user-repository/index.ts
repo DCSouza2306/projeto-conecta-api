@@ -10,6 +10,21 @@ async function create(params: CreateUserParams) {
 async function findByUserName(userName: string) {
  return prisma.user.findFirst({
   where: { userName },
+  include: {
+    GroupMember: {
+        include: {
+            Group: {
+                include: {
+                    BookList: {
+                        include: {
+                            Book: true
+                        }
+                    }
+                }
+            }
+        }
+    }
+  }
  });
 }
 

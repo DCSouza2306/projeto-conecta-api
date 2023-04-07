@@ -6,8 +6,6 @@ import { authorData } from "./utils/author";
 import { bookData } from "./utils/book";
 import { bookListData } from "./utils/book-list";
 import { groupMemberData } from "./utils/group-member";
-import dayjs from "dayjs";
-import { readingListData } from "./utils/reading-list";
 import { meetingData } from "./utils/meeting";
 
 const prisma = new PrismaClient();
