@@ -8,33 +8,30 @@ async function getGroupById(id: number) {
  return prisma.group.findFirst({
   where: { id },
   include: {
-    Meeting: true,
-    ReadingList: {
+   Meeting: true,
+   BookList: {
+    include: {
+     Book: {
       include: {
-        BookList: {
-          include:{
-            Book: {
-              include:{
-                Author: true,
-              }
-            }
-          }
-        }
-      }
+       Author: true,
+      },
+     },
     },
-    GroupMember: {
-      include: {
-        User: true,
-      }
+   },
+
+   GroupMember: {
+    include: {
+     User: true,
     },
-    GroupLink: true
-  }
+   },
+   GroupLink: true,
+  },
  });
 }
 
 const groupRepository = {
  getAllGroups,
- getGroupById
+ getGroupById,
 };
 
 export default groupRepository;

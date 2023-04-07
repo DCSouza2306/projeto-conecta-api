@@ -30,15 +30,15 @@ model Book {
 }
 
 model BookList {
-  id            Int          @id(map: "BookList_pk") @default(autoincrement())
-  readingListId Int
-  bookId        Int
-  createdAt     DateTime?    @default(now()) @db.Timestamp(6)
-  status        BookListType
-  finishAt      DateTime     @db.Timestamp(6)
-  startAt       DateTime     @db.Timestamp(6)
-  Book          Book         @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk1")
-  ReadingList   ReadingList  @relation(fields: [readingListId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk0")
+  id        Int          @id(map: "BookList_pk") @default(autoincrement())
+  bookId    Int
+  createdAt DateTime?    @default(now()) @db.Timestamp(6)
+  status    BookListType
+  finishAt  DateTime     @db.Timestamp(6)
+  startAt   DateTime     @db.Timestamp(6)
+  groupId   Int
+  Book      Book         @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk1")
+  Group     Group        @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model BookVote {
@@ -61,11 +61,11 @@ model Group {
   createdAt   DateTime?     @default(now()) @db.Timestamp(6)
   updatedAt   DateTime?     @db.Timestamp(6)
   urlImage    String
+  BookList    BookList[]
   GroupLink   GroupLink[]
   GroupMember GroupMember[]
   ListVote    ListVote[]
   Meeting     Meeting[]
-  ReadingList ReadingList[]
 }
 
 model ListVote {
@@ -93,25 +93,14 @@ model Meeting {
   MeetingParticipant MeetingParticipant[]
 }
 
-model ReadingList {
-  id          Int        @id(map: "ReadingList_pk") @default(autoincrement())
-  name        String     @db.VarChar(255)
-  groupId     Int
-  createdAt   DateTime?  @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime?  @db.Timestamp(6)
-  description String
-  Group       Group      @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ReadingList_fk0")
-  BookList    BookList[]
-}
-
 model User {
   id                 Int                  @id(map: "User_pk") @default(autoincrement())
   email              String               @unique @db.VarChar(255)
-  userName           String               @unique(map: "User_user_key") @db.VarChar(255)
   password           String               @db.VarChar(255)
   createdAt          DateTime?            @default(now()) @db.Timestamp(6)
   updatedAt          DateTime?            @db.Timestamp(6)
   urlImage           String
+  userName           String               @unique(map: "User_user_key") @db.VarChar(255)
   GroupMember        GroupMember[]
   MeetingParticipant MeetingParticipant[]
 }

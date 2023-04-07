@@ -61,16 +61,9 @@ async function main() {
    ),
   });
 
-  //Create a reading lists for groups with members
-  await prisma.readingList.createMany({
-   data: readingListData(groups)
-  });
-
-  const readingLists = await prisma.readingList.findMany()
-
-  //Adding books to the reading list
+  //Adding books to the groups
   await prisma.bookList.createMany({
-   data: bookListData(numBooksInList, books, readingLists),
+   data: bookListData(numBooksInList, books, groups),
   });
 
   await prisma.meeting.createMany({

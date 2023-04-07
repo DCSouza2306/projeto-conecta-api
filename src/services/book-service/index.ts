@@ -34,10 +34,10 @@ async function getBookById(id: number){
 
     const groups = book.BookList.map((e) => {
         return {
-            id: e.ReadingList.Group.id,
-            name: e.ReadingList.Group.name,
-            urlImage: e.ReadingList.Group.urlImage,
-            groupStatus: e.ReadingList.Group.status,
+            id: e.Group.id,
+            name: e.Group.name,
+            urlImage: e.Group.urlImage,
+            groupStatus: e.Group.status,
             readingStatus: e.status,
             startReading: e.startAt
         }

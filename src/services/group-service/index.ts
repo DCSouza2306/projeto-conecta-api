@@ -22,7 +22,7 @@ async function getGroupById(id: number) {
   };
  });
 
- const readingList = group.ReadingList[0]?.BookList?.map((e) => {
+ const readingList = group.BookList?.map((e) => {
     return {
         id: e.bookId,
         title: e.Book.title,
