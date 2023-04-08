@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from "../../config";
 
 async function getAllGroups() {
  return prisma.group.findMany();

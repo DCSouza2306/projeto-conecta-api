@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from "../src/config";
 
 export async function cleanDb() {
  await prisma.book.deleteMany({});
@@ -13,5 +13,4 @@ export async function cleanDb() {
  await prisma.listVote.deleteMany({});
  await prisma.meeting.deleteMany({});
  await prisma.meetingParticipant.deleteMany({});
- await prisma.readingList.deleteMany({});
 }

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getGroupById, getGroups } from "@/controllers";
+import { getGroupById, getGroups } from "../controllers";
 
 const groupRoutes = Router();
 

@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from "../../config";
 
 async function getBooks(skip: number, take: number) {
  return prisma.book.findMany({

@@ -1,4 +1,4 @@
-import bookService from "@/services/book-service";
+import bookService from "../services/book-service";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 

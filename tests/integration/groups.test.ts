@@ -1,4 +1,4 @@
-import app, { init } from "@/app";
+import app, { init } from "../../src/app";
 import httpStatus from "http-status";
 import supertest from "supertest";
 import { createGroup } from "../factories/groups-factory";

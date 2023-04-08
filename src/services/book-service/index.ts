@@ -1,5 +1,5 @@
-import { notFoundError } from "@/errors/not-found-error";
-import bookRepository from "@/repositories/book-repository";
+import { notFoundError } from "../../errors/not-found-error";
+import bookRepository from "../../repositories/book-repository";
 import { invalidQueryError } from "./errors";
 
 async function getBooks(take: number, skip: number){

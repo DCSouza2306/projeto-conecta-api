@@ -1,5 +1,5 @@
-import groupRepository from "@/repositories/group-repository";
-import { notFoundError } from "@/errors/not-found-error";
+import groupRepository from "../../repositories/group-repository";
+import { notFoundError } from "../../errors/not-found-error";
 
 async function getGroups() {
  const groups = await groupRepository.getAllGroups();

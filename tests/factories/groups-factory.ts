@@ -1,5 +1,5 @@
 import faker from "@faker-js/faker";
-import { prisma } from "@/config";
+import { prisma } from "../../src/config";
 
 export async function createGroup(){
     const group = await prisma.group.create({

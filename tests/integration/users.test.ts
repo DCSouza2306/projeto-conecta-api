@@ -1,10 +1,10 @@
-import app, { init } from "@/app";
+import app, { init } from "../../src/app";
 import httpStatus from "http-status";
 import supertest from "supertest";
 import { cleanDb } from "../helpers";
 import faker from "@faker-js/faker";
 import { createUser } from "../factories/users-factory";
-import { duplicatedUserOrEmail } from "@/services/user-service/errors";
+import { duplicatedUserOrEmail } from "../../src/services/user-service/errors";
 
 beforeAll(async () => {
  await init();

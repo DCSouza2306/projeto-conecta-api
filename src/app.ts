@@ -1,9 +1,9 @@
 import express from "express";
-import { connectDb, disconnectDB, loadEnv } from "@/config";
+import { connectDb, disconnectDB, loadEnv } from "./config";
 import cors from "cors";
 import { Express } from "express";
+import { groupRoutes, bookRoutes, userRoutes } from "./routers";
 
-import { bookRoutes, groupRoutes, userRoutes } from "@/routers";
 
 loadEnv();
 

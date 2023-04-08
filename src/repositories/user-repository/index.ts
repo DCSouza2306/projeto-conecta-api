@@ -1,5 +1,5 @@
-import { CreateUserParams } from "@/services";
-import { prisma } from "@/config";
+import { CreateUserParams } from "../../services";
+import { prisma } from "../../config";
 
 async function create(params: CreateUserParams) {
  return prisma.user.create({

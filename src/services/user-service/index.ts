@@ -1,8 +1,8 @@
 import { User } from "@prisma/client";
-import userRepository from "@/repositories/user-repository";
+import userRepository from "../../repositories/user-repository";
 import { duplicatedUserOrEmail } from "./errors";
 import bcrypt from "bcrypt";
-import { notFoundError } from "@/errors/not-found-error";
+import { notFoundError } from "../../errors/not-found-error";
 
 export type CreateUserParams = Omit<User, "id" | "createdAt" | "updatedAt">;
 

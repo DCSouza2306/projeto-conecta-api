@@ -1,7 +1,7 @@
 import { ObjectSchema } from "joi";
 import { Request, Response, NextFunction } from "express";
 import httpStatus from "http-status";
-import { invalidDataError } from "@/errors/invalid-data-error";
+import { invalidDataError } from "../errors/invalid-data-error";
 
 export function validateBody(schema: ObjectSchema) {
  return (req: Request, res: Response, next: NextFunction) => {

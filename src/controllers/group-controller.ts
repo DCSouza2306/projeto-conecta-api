@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import httpStatus from "http-status";
-import groupService from "@/services/group-service";
+import groupService from "../services/group-service";
 
 export async function getGroups(req: Request, res: Response) {
  try {

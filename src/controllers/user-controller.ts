@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import userService from "@/services/user-service";
-import { CreateUserParams } from "@/services/user-service";
+import userService, { CreateUserParams } from "../services/user-service";
 
 export async function signUp(req: Request, res: Response){
     const body = req.body as CreateUserParams;
