@@ -7,11 +7,12 @@ import { notFoundError } from "../../errors/not-found-error";
 export type CreateUserParams = Omit<User, "id" | "createdAt" | "updatedAt">;
 
 type ReadingListReturnParams = {
-   id: number,
-   groupId: number,
-   title: string,
-   status: string
-}[]
+ id: number;
+ groupId: number;
+ title: string;
+ status: string;
+ urlImage: string
+}[];
 
 async function signUp(params: CreateUserParams) {
  await validateEmailAndUserName(params);
@@ -26,41 +27,45 @@ async function signUp(params: CreateUserParams) {
  });
 
  return {
-    id: response.id,
-    user: response.userName
+  id: response.id,
+  user: response.userName,
  };
 }
 
-async function getUser(userName: string){
-   const user = await validateUserName(userName);
-   const readingLists:ReadingListReturnParams = []
-   const groups = user.GroupMember.map((e) => {
-      e.Group.BookList.forEach((e) => {
-         readingLists.push({
-            id: e.bookId,
-            groupId: e.groupId,
-            status: e.status,
-            title: e.Book.title
-         })
-      })
-      return {
-         id: e.Group.id,
-         name: e.Group.name,
-         status: e.status,
-         position: e.position,
-         urlImage: e.Group.urlImage,
-      }
-   })
+async function getUser(userName: string) {
+ const user = await validateUserName(userName);
+ const readingLists: ReadingListReturnParams = [];
+ const groups = user.GroupMember.map((e) => {
+  e.Group.BookList.forEach((e) => {
+   readingLists.push({
+    id: e.bookId,
+    groupId: e.groupId,
+    status: e.status,
+    title: e.Book.title,
+    urlImage: e.Book.urlImage,
+   });
+  });
+  return {
+   id: e.Group.id,
+   name: e.Group.name,
+   status: e.status,
+   position: e.position,
+   urlImage: e.Group.urlImage,
+  };
+ });
 
+ const currentReadings = readingLists?.filter((e) => e.status === "CURRENT")
+ const nextReadings = readingLists?.filter((e) => e.status === "NEXT")
 
-   return {
-      id: user.id,
-      userName: user.userName,
-      urlImage: user.urlImage,
-      about: user.about,
-      Groups: groups,
-      ReadingLists: readingLists
-   };
+ return {
+  id: user.id,
+  userName: user.userName,
+  urlImage: user.urlImage,
+  about: user.about,
+  Groups: groups,
+  CurrentReadings: currentReadings,
+  NextReadings: nextReadings,
+ };
 }
 
 async function validateEmailAndUserName(params: CreateUserParams) {
@@ -76,18 +81,18 @@ async function validateEmailAndUserName(params: CreateUserParams) {
  }
 }
 
-async function validateUserName(userName: string){
-   const user = await userRepository.findByUserName(userName);
-   if(!user){
-      throw notFoundError();
-   }
+async function validateUserName(userName: string) {
+ const user = await userRepository.findByUserName(userName);
+ if (!user) {
+  throw notFoundError();
+ }
 
-   return user;
+ return user;
 }
 
 const userService = {
  signUp,
- getUser
+ getUser,
 };
 
 export default userService;
