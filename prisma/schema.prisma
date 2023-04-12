@@ -114,8 +114,9 @@ model GroupMember {
   message   String             @db.VarChar(255)
   createdAt DateTime?          @default(now()) @db.Timestamp(6)
   updatedAt DateTime?          @db.Timestamp(6)
-  position  PositionType
+  roleId    Int
   Group     Group              @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Registration_fk1")
+  Role      Role               @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   User      User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Registration_fk0")
 }
 
@@ -143,6 +144,34 @@ model MeetingParticipant {
   updatedAt DateTime? @db.Timestamp(6)
   Meeting   Meeting   @relation(fields: [meetingId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   User      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Permision {
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(255)
+  description   String
+  createdAt     DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime?       @db.Timestamp(6)
+  RolePermision RolePermision[]
+}
+
+model Role {
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(255)
+  description   String
+  createdAt     DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime?       @db.Timestamp(6)
+  GroupMember   GroupMember[]
+  RolePermision RolePermision[]
+}
+
+
+model RolePermision {
+  roleId      Int
+  permisionId Int
+  id          Int       @id @default(autoincrement())
+  Permision   Permision @relation(fields: [permisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Role        Role      @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum GroupStatus {
