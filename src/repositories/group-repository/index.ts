@@ -30,9 +30,19 @@ async function getGroupById(id: number) {
  });
 }
 
+async function putGroupName( id: number ,name: string){
+    return prisma.group.update({
+        where: {id},
+        data: {
+            name
+        }
+    })
+}
+
 const groupRepository = {
  getAllGroups,
  getGroupById,
+ putGroupName
 };
 
 export default groupRepository;

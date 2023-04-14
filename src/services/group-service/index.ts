@@ -62,9 +62,20 @@ async function getGroupById(id: number) {
  }
 }
 
+async function putGroupName(name: string, groupId: number){
+   const groupExist = await groupRepository.getGroupById(groupId);
+
+   if(!groupExist){
+      throw notFoundError();
+   }
+
+   await groupRepository.putGroupName(groupId, name)
+}
+
 const groupService = {
  getGroups,
  getGroupById,
+ putGroupName
 };
 
 export default groupService;

@@ -11,36 +11,56 @@ async function findByUserName(userName: string) {
  return prisma.user.findFirst({
   where: { userName },
   include: {
-    GroupMember: {
+   GroupMember: {
+    include: {
+     Role: true,
+     Group: {
+      include: {
+       BookList: {
         include: {
-            Role: true,
-            Group: {
+         Book: true,
+        },
+       },
+      },
+     },
+    },
+   },
+  },
+ });
+}
+
+async function findByEmail(email: string) {
+ return prisma.user.findFirst({
+  where: { email },
+ });
+}
+
+async function findById(id: number){
+    return prisma.user.findFirst({
+        where: {id},
+        include: {
+            GroupMember: {
                 include: {
-                    BookList: {
+                    Role: {
                         include: {
-                            Book: true
+                            RolePermision: {
+                                include: {
+                                    Permision: true
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-    },
-  }
- });
+    })
 }
-
-async function findByEmail(email: string) {
-    return prisma.user.findFirst({
-     where: { email },
-    });
-   }
-   
 
 const userRepository = {
  create,
  findByUserName,
- findByEmail
-
+ findByEmail,
+ findById
 };
 
 export default userRepository;
