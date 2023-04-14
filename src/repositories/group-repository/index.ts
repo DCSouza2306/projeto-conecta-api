@@ -21,6 +21,7 @@ async function getGroupById(id: number) {
 
    GroupMember: {
     include: {
+     Role: true,
      User: true,
     },
    },

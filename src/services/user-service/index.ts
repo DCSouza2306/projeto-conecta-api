@@ -49,7 +49,7 @@ async function getUser(userName: string) {
    id: e.Group.id,
    name: e.Group.name,
    status: e.status,
-   position: e.position,
+   position: e.Role.name,
    urlImage: e.Group.urlImage,
   };
  });

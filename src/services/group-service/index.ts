@@ -18,7 +18,7 @@ async function getGroupById(id: number) {
    id: e.User.id,
    name: e.User.userName,
    urlImage: e.User.urlImage,
-   position: e.position,
+   position: e.Role.name,
   };
  });
 

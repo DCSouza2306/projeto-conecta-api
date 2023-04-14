@@ -104,6 +104,7 @@ model User {
   about              String?              @db.VarChar
   GroupMember        GroupMember[]
   MeetingParticipant MeetingParticipant[]
+  Session            Session[]
 }
 
 model GroupMember {
@@ -165,13 +166,21 @@ model Role {
   RolePermision RolePermision[]
 }
 
-
 model RolePermision {
   roleId      Int
   permisionId Int
   id          Int       @id @default(autoincrement())
   Permision   Permision @relation(fields: [permisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Role        Role      @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Session {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  token     String
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @db.Timestamp(6)
+  User      User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum GroupStatus {

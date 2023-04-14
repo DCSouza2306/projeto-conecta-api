@@ -1,4 +1,4 @@
-import { GroupMember, Group, User } from "@prisma/client";
+import { GroupMember, Group, User, Role } from "@prisma/client";
 import faker from "@faker-js/faker";
 
 type GroupMemberInputParams = Omit<
@@ -6,20 +6,24 @@ type GroupMemberInputParams = Omit<
  "id" | "createdAt" | "updatedAt"
 >[];
 
+type Roles = Role[]
+
 export function groupMemberData(
  numGroups: number,
  groups: Group[],
  users: User[],
+ roles: Roles,
  numMembersGroup: number
 ) {
  const data: GroupMemberInputParams = [];
 
  for (let i = 0; i < groups.length; i++) {
+    const allUsers = users;
   if (i >= numGroups) {
    data.push({
     groupId: groups[i].id,
     userId: users[faker.datatype.number({min:0, max: users.length - 1})].id,
-    position: "OWNER",
+    roleId: roles[0].id,
     message: faker.lorem.sentence(),
     status: "APROVED",
    });
@@ -29,13 +33,13 @@ export function groupMemberData(
     j < faker.datatype.number({ min: 1, max: numMembersGroup });
     j++
    ) {
-    const allUsers = users;
+   
     const index = faker.datatype.number({min:0, max: users.length - 1})
     if (j === 0) {
      data.push({
       groupId: groups[i].id,
       userId: allUsers[index].id,
-      position: "OWNER",
+      roleId: roles[0].id,
       message: faker.lorem.sentence(),
       status: "APROVED",
      });
@@ -46,7 +50,7 @@ export function groupMemberData(
      data.push({
       groupId: groups[i].id,
       userId: allUsers[index].id,
-      position: "OFFICER",
+      roleId: roles[1].id,
       message: faker.lorem.sentence(),
       status: "APROVED",
      });
@@ -57,7 +61,7 @@ export function groupMemberData(
      data.push({
       groupId: groups[i].id,
       userId: allUsers[index].id,
-      position: "MEMBER",
+      roleId: roles[2].id,
       message: faker.lorem.sentence(),
       status: "APROVED",
      });

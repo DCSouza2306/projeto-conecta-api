@@ -1,6 +1,5 @@
 import { PrismaClient, Role } from "@prisma/client";
 import { RolePermision } from "@prisma/client";
-import faker from "@faker-js/faker";
 import { userData } from "./utils/user";
 import { groupData } from "./utils/group";
 import { authorData } from "./utils/author";
@@ -14,7 +13,7 @@ const prisma = new PrismaClient();
 type RolesPermisionsOwnerParams = Omit<RolePermision, "id">[]
 
 async function main() {
- await prisma.role.createMany({
+ /* await prisma.role.createMany({
   data: [
    {
     name: "owner",
@@ -179,9 +178,9 @@ async function main() {
     },
     ]
  }
- )
+ ) */
 
- /*  let groups = await prisma.group.findFirst();
+  let groups = await prisma.group.findFirst();
  let books = await prisma.book.findFirst();
 
  const numAuthors = 30;
@@ -218,6 +217,7 @@ async function main() {
   const users = await prisma.user.findMany();
   const groups = await prisma.group.findMany();
   const books = await prisma.book.findMany();
+  const roles = await prisma.role.findMany()
 
   //Adding members, owner and officers to groups
   await prisma.groupMember.createMany({
@@ -225,6 +225,7 @@ async function main() {
     numGroupsWithMembers,
     groups,
     users,
+    roles,
     numMaxMembersInGroup
    ),
   });
@@ -237,7 +238,7 @@ async function main() {
   await prisma.meeting.createMany({
    data: meetingData(numGroupsWithMembers, groups)
   });
- } */
+ }
 }
 
 main()

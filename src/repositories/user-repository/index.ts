@@ -13,6 +13,7 @@ async function findByUserName(userName: string) {
   include: {
     GroupMember: {
         include: {
+            Role: true,
             Group: {
                 include: {
                     BookList: {
@@ -23,7 +24,7 @@ async function findByUserName(userName: string) {
                 }
             }
         }
-    }
+    },
   }
  });
 }
