@@ -1,4 +1,5 @@
 import { prisma } from "../../config";
+import { CreateGroupParams } from "../../services";
 
 async function getAllGroups() {
  return prisma.group.findMany();
@@ -39,10 +40,17 @@ async function putGroupName( id: number ,name: string){
     })
 }
 
+async function createGroup(data: CreateGroupParams){
+    return prisma.group.create({
+        data
+    })
+}
+
 const groupRepository = {
  getAllGroups,
  getGroupById,
- putGroupName
+ putGroupName,
+ createGroup
 };
 
 export default groupRepository;

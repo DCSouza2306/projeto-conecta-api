@@ -112,7 +112,6 @@ model GroupMember {
   userId    Int
   groupId   Int
   status    RegistrationStatus
-  message   String             @db.VarChar(255)
   createdAt DateTime?          @default(now()) @db.Timestamp(6)
   updatedAt DateTime?          @db.Timestamp(6)
   roleId    Int

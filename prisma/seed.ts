@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 type RolesPermisionsOwnerParams = Omit<RolePermision, "id">[]
 
 async function main() {
- /* await prisma.role.createMany({
+ await prisma.role.createMany({
   data: [
    {
     name: "owner",
@@ -178,7 +178,7 @@ async function main() {
     },
     ]
  }
- ) */
+ )
 
   let groups = await prisma.group.findFirst();
  let books = await prisma.book.findFirst();

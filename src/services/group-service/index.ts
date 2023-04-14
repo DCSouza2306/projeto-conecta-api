@@ -1,4 +1,6 @@
 import groupRepository from "../../repositories/group-repository";
+import roleRepository from "../../repositories/role-repository";
+import groupMemberRepository from "../../repositories/group-member-repository";
 import { notFoundError } from "../../errors/not-found-error";
 
 async function getGroups() {
@@ -72,10 +74,31 @@ async function putGroupName(name: string, groupId: number){
    await groupRepository.putGroupName(groupId, name)
 }
 
+async function createGroup(params: CreateGroupParams, userId: number){
+   const group = await groupRepository.createGroup(params);
+
+   const role = await roleRepository.getByName("owner");
+
+   await groupMemberRepository.create(userId, group.id, role.id)
+
+
+   return group;
+
+}
+
 const groupService = {
  getGroups,
  getGroupById,
- putGroupName
+ putGroupName,
+ createGroup
 };
+
+export type CreateGroupParams = {
+   name: string,
+   about: string,
+   description: string,
+   urlImage: string,
+   status: "OPEN"
+}
 
 export default groupService;

@@ -24,7 +24,6 @@ export function groupMemberData(
     groupId: groups[i].id,
     userId: users[faker.datatype.number({min:0, max: users.length - 1})].id,
     roleId: roles[0].id,
-    message: faker.lorem.sentence(),
     status: "APROVED",
    });
   } else {
@@ -40,7 +39,6 @@ export function groupMemberData(
       groupId: groups[i].id,
       userId: allUsers[index].id,
       roleId: roles[0].id,
-      message: faker.lorem.sentence(),
       status: "APROVED",
      });
 
@@ -51,7 +49,6 @@ export function groupMemberData(
       groupId: groups[i].id,
       userId: allUsers[index].id,
       roleId: roles[1].id,
-      message: faker.lorem.sentence(),
       status: "APROVED",
      });
 
@@ -62,7 +59,6 @@ export function groupMemberData(
       groupId: groups[i].id,
       userId: allUsers[index].id,
       roleId: roles[2].id,
-      message: faker.lorem.sentence(),
       status: "APROVED",
      });
 
