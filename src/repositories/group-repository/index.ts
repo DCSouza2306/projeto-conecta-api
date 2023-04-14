@@ -46,11 +46,18 @@ async function createGroup(data: CreateGroupParams){
     })
 }
 
+async function findByName(name: string){
+    return prisma.group.findFirst({
+        where: {name}
+    })
+}
+
 const groupRepository = {
  getAllGroups,
  getGroupById,
  putGroupName,
- createGroup
+ createGroup,
+ findByName
 };
 
 export default groupRepository;

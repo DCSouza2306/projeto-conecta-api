@@ -51,7 +51,9 @@ export async function createGroup(req: AuthenticatedRequest, res: Response) {
   const group = await groupService.createGroup(body, userId);
   res.status(httpStatus.CREATED).send(group)
  } catch (error) {
-    console.log(error);
+  if(error.name === "ConflictGroupName"){
+    return res.status(httpStatus.CONFLICT).send(error.message)
+  }
   res.sendStatus(httpStatus.BAD_REQUEST);
  }
 }
