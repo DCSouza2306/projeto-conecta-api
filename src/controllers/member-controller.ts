@@ -46,6 +46,18 @@ export async function updateStatusMember(req: AuthenticatedRequest, res: Respons
     }
 }
 
+export async function removeMember(req: AuthenticatedRequest, res: Response){
+    const {groupId} = req.params;
+    const {userId} = req.body as UserIdParams
+
+    try {
+        await memberService.deleteMember(userId, parseInt(groupId));
+        res.sendStatus(httpStatus.OK)
+    } catch (error) {
+        res.status(httpStatus.BAD_REQUEST).send(error)
+    }
+}
+
 type UserIdParams = {
     userId: number
 }
