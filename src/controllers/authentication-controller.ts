@@ -10,7 +10,7 @@ export async function signIn(req: Request, res: Response){
         res.status(httpStatus.OK).send(response)
     } catch (error) {
         if(error.name == "InvalidCredentialsError"){
-            return res.sendStatus(httpStatus.UNAUTHORIZED)
+            return res.status(httpStatus.UNAUTHORIZED).send(error.message)
         }
         res.sendStatus(httpStatus.BAD_REQUEST)
     }

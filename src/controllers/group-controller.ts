@@ -54,7 +54,7 @@ export async function createGroup(req: AuthenticatedRequest, res: Response) {
   if(error.name === "ConflictGroupName"){
     return res.status(httpStatus.CONFLICT).send(error.message)
   }
-  res.sendStatus(httpStatus.BAD_REQUEST);
+  res.status(httpStatus.BAD_REQUEST).send(error);
  }
 }
 
