@@ -12,7 +12,6 @@ async function getGroups() {
 async function getGroupById(id: number) {
  const group = await groupRepository.getGroupById(id);
  if (!group) {
-  console.log("entrou aqui?");
   throw notFoundError();
  }
 
@@ -60,20 +59,20 @@ async function getGroupById(id: number) {
   status: group.status,
   Members: members,
   NextReadings: !nextReadings ? [] : nextReadings,
-  CurrentReading: !currentReading ? {} : currentReading[0],
+  CurrentReading: currentReading.length === 0 ? {} : currentReading[0],
   Meeting: meeting.length === 0 ? {} : meeting[0],
   Links: links,
  };
 }
 
-async function putGroupName(name: string, groupId: number) {
+async function putGroupName(params: CreateGroupParams, groupId: number) {
  const groupExist = await groupRepository.getGroupById(groupId);
 
  if (!groupExist) {
   throw notFoundError();
  }
 
- await groupRepository.putGroupName(groupId, name);
+ await groupRepository.putGroupName(groupId, params.name);
 }
 
 async function createGroup(params: CreateGroupParams, userId: number) {
@@ -110,5 +109,9 @@ export type CreateGroupParams = {
  urlImage: string;
  status: "OPEN";
 };
+
+export type ChangeNameGroupParams = {
+    name: string
+}
 
 export default groupService;

@@ -3,6 +3,9 @@ import httpStatus from "http-status";
 import supertest from "supertest";
 import { createGroup } from "../factories/groups-factory";
 import { cleanDb } from "../helpers";
+import faker from "@faker-js/faker";
+import jwt from "jsonwebtoken"
+import { createUser } from "../factories/users-factory";
 
 beforeAll(async () => {
  await init();
@@ -46,5 +49,37 @@ describe("GET /group/:groupId", () => {
    Meeting: expect.any(Object),
    Links: expect.any(Array),
   });
+ });
+});
+
+describe("PUT /group/edit/group-name/:groupId", () => {
+ it("should respond with status 401 if no token is given", async () => {
+  const response = await server.put("/group/edit/group-name/0");
+
+  expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+ });
+
+ it("should respond with status 401 if given token is not valid", async () => {
+  const token = faker.lorem.word();
+
+  const response = await server
+   .put("/group/edit/group-name/0")
+   .set("Authorization", `Bearer ${token}`);
+
+  expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+ });
+
+ it("should respond with status 401 if there is no session for given token", async () => {
+  const userWithoutSession = await createUser();
+  const token = jwt.sign(
+   { userId: userWithoutSession.id },
+   process.env.JWT_SECRET
+  );
+
+  const response = await server
+   .put("/group/edit/group-name/0")
+   .set("Authorization", `Bearer ${token}`);
+
+  expect(response.status).toBe(httpStatus.UNAUTHORIZED);
  });
 });

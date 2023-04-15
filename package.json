@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
-    "test": "dotenv -e .env.test jest --passWithNoTests --runInBand",
+    "test": "npm run test:load-envs jest --passWithNoTests --runInBand",
     "test:coverage": "NODE_ENV=test jest --passWithNoTests --runInBand --coverage --collectCoverageFrom='./src/**'",
     "test:migration:run": "npm run test:load-envs prisma migrate deploy",
     "test:migration:generate": "npm run test:load-envs prisma migrate dev",

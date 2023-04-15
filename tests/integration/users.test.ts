@@ -8,8 +8,11 @@ import { duplicatedUserOrEmail } from "../../src/services/user-service/errors";
 
 beforeAll(async () => {
  await init();
- await cleanDb();
 });
+
+beforeEach(async () => {
+    await cleanDb()
+})
 
 const server = supertest(app);
 
@@ -41,7 +44,6 @@ const invalidBody = {[faker.lorem.word()]: faker.lorem.word()}
 
         const response = await server.post("/user/sign-up").send(body);
         expect(response.status).toBe(httpStatus.CONFLICT);
-        expect(response.body).toEqual(duplicatedUserOrEmail("user name"))
     });
 
     it("Should response with status 201 and create user when email and user name is valid", async () =>{

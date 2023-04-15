@@ -18,17 +18,16 @@ export async function getGroupById(req: Request, res: Response) {
   const group = await groupService.getGroupById(parseInt(groupId));
   res.status(httpStatus.OK).send(group);
  } catch (error) {
-  console.log(error);
   res.status(httpStatus.NOT_FOUND).send(error);
  }
 }
 
 export async function putGroupName(req: AuthenticatedRequest, res: Response) {
- const body = req.body as GroupNameChangeParams;
+ const body = req.body as CreateGroupParams;
  const { groupId } = req.params;
 
  try {
-  await groupService.putGroupName(body.name, parseInt(groupId));
+  await groupService.putGroupName(body, parseInt(groupId));
   res.sendStatus(httpStatus.OK);
  } catch (error) {
   if (error.name === "UnauthorizedError") {
