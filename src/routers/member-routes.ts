@@ -1,19 +1,22 @@
 import Router from "express";
 import { authenticateToken } from "../middlewares/authentication-middleware";
-import { deleteMember, postMember, removeMember, updateStatusMember } from "../controllers/member-controller";
+import {
+    changeRoleMember,
+ deleteMember,
+ postMember,
+ removeMember,
+ updateStatusMember,
+} from "../controllers/member-controller";
 import { can } from "../middlewares/permissions-middleware";
 
 const memberRoutes = Router();
 
 memberRoutes
- .delete("/leave/:groupId", authenticateToken, deleteMember)
- .delete("/remove-member/:groupId", authenticateToken, removeMember)
- .post("/request/:groupId", authenticateToken, postMember)
- .put(
-  "/change-request/:groupId",
-  authenticateToken,
-  can,
-  updateStatusMember
- );
+ .all("/*", authenticateToken)
+ .delete("/leave/:groupId", deleteMember)
+ .post("/request/:groupId", postMember)
+ .delete("/remove-member/:groupId", can, removeMember)
+ .put("/change-request/:groupId", can, updateStatusMember)
+ .put("/change-role/:groupId", can, changeRoleMember);
 
 export { memberRoutes };

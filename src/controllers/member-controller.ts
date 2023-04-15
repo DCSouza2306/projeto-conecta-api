@@ -54,10 +54,27 @@ export async function removeMember(req: AuthenticatedRequest, res: Response){
         await memberService.deleteMember(userId, parseInt(groupId));
         res.sendStatus(httpStatus.OK)
     } catch (error) {
-        res.status(httpStatus.BAD_REQUEST).send(error)
+        res.status(httpStatus.NOT_FOUND).send(error)
+    }
+}
+
+export async function changeRoleMember(req: AuthenticatedRequest, res: Response){
+    const {groupId} = req.params
+    const {userId, role} = req.body as UserAndRoleIdParams
+
+    try {
+        await memberService.changeRoleMember(parseInt(groupId), userId, role);
+        res.sendStatus(httpStatus.OK)
+    } catch (error) {
+        res.status(httpStatus.NOT_FOUND).send(error)
     }
 }
 
 type UserIdParams = {
     userId: number
+}
+
+type UserAndRoleIdParams = {
+    userId: number,
+    role: string,
 }

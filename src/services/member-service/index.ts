@@ -42,10 +42,29 @@ async function updateStatusMember(groupId: number, userId: number){
 
 }
 
+async function changeRoleMember(groupId: number, userId: number, roleName: string){
+    const role = await roleRepository.getByName(roleName);
+
+    if(!role){
+        throw notFoundError()
+    }
+
+    const member = await memberRepository.getMemberGroupByUserId(userId, groupId);
+
+    if(!member){
+        throw notFoundError();
+    }
+
+    const memberUpdated = await memberRepository.updateRoleMember(member.id, role.id)
+
+    return memberUpdated;
+}
+
 const memberService = {
  deleteMember,
  postMember,
- updateStatusMember
+ updateStatusMember,
+ changeRoleMember
 };
 
 export default memberService;
