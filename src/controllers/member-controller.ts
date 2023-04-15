@@ -14,3 +14,18 @@ export async function deleteMember(req: AuthenticatedRequest, res: Response){
         res.status(httpStatus.NOT_FOUND).send(error)
     }
 }
+
+export async function postMember(req: AuthenticatedRequest, res: Response){
+    const {groupId} = req.params;
+    const {userId} = req;
+
+    try {
+        const member = await memberService.postMember(userId, parseInt(groupId));
+        res.status(httpStatus.CREATED).send(member)
+    } catch (error) {
+        if(error.name === "NotFoundError"){
+            return res.sendStatus(httpStatus.NOT_FOUND).send(error)
+        }
+        res.status(httpStatus.BAD_REQUEST).send(error)
+    }
+}

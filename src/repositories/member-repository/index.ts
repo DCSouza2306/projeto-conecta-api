@@ -12,9 +12,21 @@ async function deleteMember(id: number) {
  });
 }
 
+async function createMember(userId: number, groupId: number, roleId: number){
+    return prisma.groupMember.create({
+        data:{
+            status: "APPLIED",
+            groupId,
+            userId,
+            roleId
+        }
+    })
+}
+
 const memberRepository = {
  getMemberGroupByUserId,
- deleteMember
+ deleteMember,
+ createMember
 };
 
 export default memberRepository;
