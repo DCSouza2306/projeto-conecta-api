@@ -22,12 +22,12 @@ export async function getGroupById(req: Request, res: Response) {
  }
 }
 
-export async function putGroupName(req: AuthenticatedRequest, res: Response) {
+export async function putGroup(req: AuthenticatedRequest, res: Response) {
  const body = req.body as CreateGroupParams;
  const { groupId } = req.params;
 
  try {
-  await groupService.putGroupName(body, parseInt(groupId));
+  await groupService.putGroup(body, parseInt(groupId));
   res.sendStatus(httpStatus.OK);
  } catch (error) {
   if (error.name === "UnauthorizedError") {

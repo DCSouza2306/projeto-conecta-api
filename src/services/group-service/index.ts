@@ -65,14 +65,14 @@ async function getGroupById(id: number) {
  };
 }
 
-async function putGroupName(params: CreateGroupParams, groupId: number) {
+async function putGroup(params: CreateGroupParams, groupId: number) {
  const groupExist = await groupRepository.getGroupById(groupId);
 
  if (!groupExist) {
   throw notFoundError();
  }
 
- await groupRepository.putGroupName(groupId, params);
+ await groupRepository.putGroup(groupId, params);
 }
 
 async function createGroup(params: CreateGroupParams, userId: number) {
@@ -98,7 +98,7 @@ async function validateGroupName(name: string) {
 const groupService = {
  getGroups,
  getGroupById,
- putGroupName,
+ putGroup,
  createGroup,
 };
 

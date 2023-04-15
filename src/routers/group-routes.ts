@@ -3,7 +3,7 @@ import {
  createGroup,
  getGroupById,
  getGroups,
- putGroupName,
+ putGroup,
 } from "../controllers";
 import { authenticateToken } from "../middlewares/authentication-middleware";
 import { can } from "../middlewares/permissions-middleware";
@@ -20,7 +20,7 @@ groupRoutes
   authenticateToken,
   can,
   validateBody(groupSchema),
-  putGroupName
+  putGroup
  )
  .post("/create", authenticateToken, validateBody(groupSchema), createGroup);
 
