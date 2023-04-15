@@ -23,10 +23,20 @@ async function createMember(userId: number, groupId: number, roleId: number){
     })
 }
 
+async function updateStatusMember(id: number){
+    return prisma.groupMember.update({
+        where: {id},
+        data: {
+            status: "APROVED"
+        }
+    })
+}
+
 const memberRepository = {
  getMemberGroupByUserId,
  deleteMember,
- createMember
+ createMember,
+ updateStatusMember
 };
 
 export default memberRepository;

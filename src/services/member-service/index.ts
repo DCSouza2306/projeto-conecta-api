@@ -28,9 +28,22 @@ async function postMember(userId: number, groupId: number) {
 
 }
 
+async function updateStatusMember(groupId: number, userId: number){
+
+    const member = await memberRepository.getMemberGroupByUserId(userId, groupId);
+
+    if(!member){
+        throw notFoundError();
+    }
+
+    const updatedMember = memberRepository.updateStatusMember(member.id)
+
+}
+
 const memberService = {
  deleteMember,
  postMember,
+ updateStatusMember
 };
 
 export default memberService;

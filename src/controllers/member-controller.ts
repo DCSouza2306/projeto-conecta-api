@@ -29,3 +29,20 @@ export async function postMember(req: AuthenticatedRequest, res: Response){
         res.status(httpStatus.BAD_REQUEST).send(error)
     }
 }
+
+export async function updateStatusMember(req: AuthenticatedRequest, res: Response){
+    const {groupId} = req.params;
+
+    const {userId} = req.body as UserIdParams;
+
+    try {
+        const member = await memberService.updateStatusMember(parseInt(groupId), userId);
+        res.status(httpStatus.OK).send(member)
+    } catch (error) {
+        res.sendStatus(httpStatus.BAD_REQUEST)
+    }
+}
+
+type UserIdParams = {
+    userId: number
+}
