@@ -3,36 +3,43 @@ import { AuthenticatedRequest } from "./authentication-middleware";
 import userRepository from "../repositories/user-repository";
 import { notFoundError } from "../errors/not-found-error";
 import { unauthorizedError } from "../errors/unauthorized-error";
+import httpStatus from "http-status";
 
-export function can(permissionsReceived: string[]) {
- return async (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
- ) => {
-  const { userId } = req;
-  const { groupId } = req.params;
+export async function can(
+ req: AuthenticatedRequest,
+ res: Response,
+ next: NextFunction
+) {
+ const { userId } = req;
+ const { groupId } = req.params;
+ const { permissions } = req.query as Record<string, string[]>;
 
-  const user = await userRepository.findById(userId);
+ const user = await userRepository.findById(userId);
 
-  if (!user) {
-   throw notFoundError();
-  }
+ if (!user) {
+  return generateNotFoundResponse(res);
+ }
 
-  const group = user.GroupMember.map((e) => {
-   return e;
-  }).filter((e) => e.groupId === parseInt(groupId));
+ const group = user.GroupMember.map((e) => {
+  return e;
+ }).filter((e) => e.groupId === parseInt(groupId));
+ if (group.length === 0) {
+  return generateUnauthorizedResponse(res);
+ }
+ const havePermission = group[0].Role.RolePermision.map((e) => {
+  return e.Permision.name;
+ }).some((e) => permissions.includes(e));
 
-  if (group.length === 0) {
-   throw unauthorizedError();
-  }
-  const permissions = group[0].Role.RolePermision.map((e) => {
-   return e.Permision.name;
-  }).some((e) => permissionsReceived.includes(e));
+ if (!havePermission) {
+  return generateUnauthorizedResponse(res);
+ }
+ return next();
+}
 
-  if (!permissions) {
-   throw unauthorizedError();
-  }
-  return next();
- };
+function generateUnauthorizedResponse(res: Response) {
+ res.status(httpStatus.UNAUTHORIZED).send(unauthorizedError());
+}
+
+function generateNotFoundResponse(res: Response) {
+ res.status(httpStatus.UNAUTHORIZED).send(notFoundError());
 }

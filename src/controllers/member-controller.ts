@@ -39,7 +39,10 @@ export async function updateStatusMember(req: AuthenticatedRequest, res: Respons
         const member = await memberService.updateStatusMember(parseInt(groupId), userId);
         res.status(httpStatus.OK).send(member)
     } catch (error) {
-        res.sendStatus(httpStatus.BAD_REQUEST)
+        if(error.name == "NotFoundError"){
+            return res.status(httpStatus.NOT_FOUND).send(error);
+        }
+        res.status(httpStatus.BAD_REQUEST).send(error)
     }
 }
 

@@ -36,7 +36,9 @@ async function updateStatusMember(groupId: number, userId: number){
         throw notFoundError();
     }
 
-    const updatedMember = memberRepository.updateStatusMember(member.id)
+    const updatedMember = await memberRepository.updateStatusMember(member.id);
+
+    return updatedMember;
 
 }
 

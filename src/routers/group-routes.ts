@@ -16,9 +16,9 @@ groupRoutes
  .get("/", getGroups)
  .get("/:groupId", getGroupById)
  .put(
-  "/edit/group-name/:groupId",
+  "/edit/:groupId",
   authenticateToken,
-  can(["edit_group_name"]),
+  can,
   validateBody(groupSchema),
   putGroupName
  )

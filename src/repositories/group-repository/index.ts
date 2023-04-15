@@ -31,12 +31,10 @@ async function getGroupById(id: number) {
  });
 }
 
-async function putGroupName( id: number ,name: string){
+async function putGroupName( id: number ,data: CreateGroupParams){
     return prisma.group.update({
         where: {id},
-        data: {
-            name
-        }
+        data
     })
 }
 

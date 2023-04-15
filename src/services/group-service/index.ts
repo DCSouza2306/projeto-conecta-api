@@ -72,7 +72,7 @@ async function putGroupName(params: CreateGroupParams, groupId: number) {
   throw notFoundError();
  }
 
- await groupRepository.putGroupName(groupId, params.name);
+ await groupRepository.putGroupName(groupId, params);
 }
 
 async function createGroup(params: CreateGroupParams, userId: number) {
