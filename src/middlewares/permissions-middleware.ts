@@ -2,7 +2,7 @@ import { NextFunction, Response } from "express";
 import { AuthenticatedRequest } from "./authentication-middleware";
 import userRepository from "../repositories/user-repository";
 import { notFoundError } from "../errors/not-found-error";
-import { unauthorizedError } from "../errors/unauthorized-error";
+import { permissionDeniedError } from "../errors/permission-denied-error";
 import httpStatus from "http-status";
 
 export async function can(
@@ -37,7 +37,7 @@ export async function can(
 }
 
 function generateUnauthorizedResponse(res: Response) {
- res.status(httpStatus.UNAUTHORIZED).send(unauthorizedError());
+ res.status(httpStatus.UNAUTHORIZED).send(permissionDeniedError());
 }
 
 function generateNotFoundResponse(res: Response) {

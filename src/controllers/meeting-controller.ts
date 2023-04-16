@@ -16,3 +16,16 @@ export async function createMeeting(req: AuthenticatedRequest, res: Response){
     }
     
 }
+
+export async function confirmMetting(req: AuthenticatedRequest, res: Response){
+    const {groupId} = req.params;
+    const {userId} = req;
+
+    try {
+        const response = await meetingService.confirmMetting(parseInt(groupId), userId)
+        res.status(httpStatus.OK).send(response)
+    } catch (error) {
+        res.status(httpStatus.BAD_REQUEST).send(error)
+    }
+}
+

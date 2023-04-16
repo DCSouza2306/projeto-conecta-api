@@ -9,7 +9,11 @@ async function getGroupById(id: number) {
  return prisma.group.findFirst({
   where: { id },
   include: {
-   Meeting: true,
+   Meeting: {
+    include: {
+        MeetingParticipant: true
+    }
+   },
    BookList: {
     include: {
      Book: {
