@@ -16,19 +16,23 @@ export async function can(
 
  const user = await userRepository.findById(userId);
 
+ //find user received by token
  if (!user) {
   return generateNotFoundResponse(res);
  }
 
+ //check if user is member in group
  const group = user.GroupMember.map((e) => {
   return e;
  }).filter((e) => e.groupId === parseInt(groupId));
  if (group.length === 0) {
   return generateUnauthorizedResponse(res);
  }
+
+ //check if user have the permissions required to do this action
  const havePermission = group[0].Role.RolePermision.map((e) => {
   return e.Permision.name;
- }).some((e) => permissions.includes(e));
+ }).some((e) => permissions?.includes(e));
 
  if (!havePermission) {
   return generateUnauthorizedResponse(res);
@@ -41,5 +45,5 @@ function generateUnauthorizedResponse(res: Response) {
 }
 
 function generateNotFoundResponse(res: Response) {
- res.status(httpStatus.UNAUTHORIZED).send(notFoundError());
+ res.status(httpStatus.NOT_FOUND).send(notFoundError());
 }

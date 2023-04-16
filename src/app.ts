@@ -9,6 +9,7 @@ import {
  authenticationRoutes,
  memberRoutes,
  meetingRoutes,
+ bookListRoutes,
 } from "./routers";
 
 loadEnv();
@@ -23,7 +24,8 @@ app
  .use("/user", userRoutes)
  .use("/sign-in", authenticationRoutes)
  .use("/member", memberRoutes)
- .use("/meeting", meetingRoutes);
+ .use("/meeting", meetingRoutes)
+ .use("/reading-list", bookListRoutes)
 
 export function init(): Promise<Express> {
  connectDb();
