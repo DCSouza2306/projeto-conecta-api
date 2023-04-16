@@ -2,20 +2,28 @@ import express from "express";
 import { connectDb, disconnectDB, loadEnv } from "./config";
 import cors from "cors";
 import { Express } from "express";
-import { groupRoutes, bookRoutes, userRoutes, authenticationRoutes, memberRoutes } from "./routers";
-
+import {
+ groupRoutes,
+ bookRoutes,
+ userRoutes,
+ authenticationRoutes,
+ memberRoutes,
+ meetingRoutes,
+} from "./routers";
 
 loadEnv();
 
 const app = express();
 
-app.use(cors())
-.use(express.json())
-.use("/group", groupRoutes)
-.use("/books", bookRoutes)
-.use("/user", userRoutes)
-.use("/sign-in", authenticationRoutes)
-.use("/member", memberRoutes);
+app
+ .use(cors())
+ .use(express.json())
+ .use("/group", groupRoutes)
+ .use("/books", bookRoutes)
+ .use("/user", userRoutes)
+ .use("/sign-in", authenticationRoutes)
+ .use("/member", memberRoutes)
+ .use("/meeting", meetingRoutes);
 
 export function init(): Promise<Express> {
  connectDb();
