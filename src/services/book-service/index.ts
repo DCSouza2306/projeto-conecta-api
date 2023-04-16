@@ -1,6 +1,8 @@
 import { notFoundError } from "../../errors/not-found-error";
+import authorRepository from "../../repositories/author-repository";
 import bookRepository from "../../repositories/book-repository";
-import { invalidQueryError } from "./errors";
+import { conflictBookTitleError, invalidQueryError } from "./errors";
+import { Book } from "@prisma/client";
 
 async function getBooks(take: number, skip: number){
     if(take < 0 || skip < 0){
@@ -59,10 +61,38 @@ async function getBookById(id: number){
     return data;
 }
 
+async function createBook(params: CreateBookParams){
+    const {title, authorId} = params;
+    await validateTitle(title);
+    await validateAuthor(authorId);
+
+    
+
+   
+}
+
+async function validateTitle(title: string){
+    const titleExist = await bookRepository.getBookByTitle(title);
+    if(titleExist){
+        throw conflictBookTitleError();
+    }
+}
+
+async function validateAuthor(authorId: number){
+    const authorExist = await authorRepository.getAuthorById(authorId);
+
+    if(!authorExist){
+        throw notFoundError()
+    }
+}
+
 const bookService = {
     getBooks,
     getBooksCount,
-    getBookById
+    getBookById,
+    createBook
 };
 
 export default bookService;
+
+export type CreateBookParams = Omit<Book, "id" | "createdAt" | "updatedAt" >

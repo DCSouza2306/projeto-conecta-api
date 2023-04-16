@@ -6,3 +6,10 @@ export function invalidQueryError(): ApplicationError {
       message: "No result for this search!",
     };
   }
+
+  export function conflictBookTitleError(): ApplicationError {
+    return {
+      name: "ConflictBookTitleError",
+      message: "Aleready exist a book with this title",
+    };
+  }

@@ -1,6 +1,7 @@
-import bookService from "../services/book-service";
+import bookService, { CreateBookParams } from "../services/book-service";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
+import { AuthenticatedRequest } from "../middlewares/authentication-middleware";
 
 export async function getBooks(req: Request, res: Response) {
  let { limit, offset } = req.query as Record<string, string>;
@@ -40,4 +41,18 @@ export async function getBookById(req: Request, res: Response) {
  } catch (err) {
   res.sendStatus(httpStatus.NOT_FOUND);
  }
+}
+
+export async function createBook(req: AuthenticatedRequest, res: Response){
+   const body = req.body as CreateBookParams
+   
+   try {
+      const data = await bookService.createBook(body);
+      res.status(httpStatus.CREATED).send(data)
+   } catch (error) {
+      if(error.name == "ConflictBookTitleError"){
+         return res.status(httpStatus.CONFLICT).send(error)
+      }
+      res.status(httpStatus.NOT_FOUND).send(error)
+   }
 }
