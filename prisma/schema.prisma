@@ -37,6 +37,7 @@ model BookList {
   finishAt  DateTime     @db.Timestamp(6)
   startAt   DateTime     @db.Timestamp(6)
   groupId   Int
+  updatedAt DateTime?    @db.Timestamp(6)
   Book      Book         @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookList_fk1")
   Group     Group        @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
@@ -89,7 +90,9 @@ model Meeting {
   updatedAt          DateTime?            @db.Timestamp(6)
   date               DateTime             @db.Timestamp(6)
   status             MeetingStatusType
+  mediator           Int
   Group              Group                @relation(fields: [groupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Meeting_fk0")
+  User               User                 @relation(fields: [mediator], references: [id], onDelete: NoAction, onUpdate: NoAction)
   MeetingParticipant MeetingParticipant[]
 }
 
@@ -103,6 +106,7 @@ model User {
   userName           String               @unique(map: "User_user_key") @db.VarChar(255)
   about              String?              @db.VarChar
   GroupMember        GroupMember[]
+  Meeting            Meeting[]
   MeetingParticipant MeetingParticipant[]
   Session            Session[]
 }

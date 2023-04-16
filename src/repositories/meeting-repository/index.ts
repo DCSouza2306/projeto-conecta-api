@@ -1,16 +1,9 @@
 import { prisma } from "../../config";
 import { CreateMeetingParams } from "../../services";
 
-async function createMeeting(params: CreateMeetingParams, groupId: number) {
+async function createMeeting(params: CreateMeetingParams) {
  return prisma.meeting.create({
-  data: {
-   date: params.date,
-   description: params.description,
-   hour: params.hour,
-   status: "COMING",
-   url: params.url,
-   groupId,
-  },
+  data: params
  });
 }
 
