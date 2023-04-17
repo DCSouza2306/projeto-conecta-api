@@ -3,7 +3,9 @@ import { prisma } from "../../config";
 import { CreateGroupParams } from "../../services";
 
 async function getAllGroups() {
- return prisma.group.findMany();
+ return prisma.group.findMany({
+    orderBy: {id: "asc"}
+ });
 }
 
 async function getGroupById(id: number) {
@@ -39,7 +41,10 @@ async function getGroupById(id: number) {
 async function putGroup( id: number ,data: CreateGroupParams){
     return prisma.group.update({
         where: {id},
-        data
+        data: {
+            ...data,
+            updatedAt: dayjs().toISOString()
+        }
     })
 }
 

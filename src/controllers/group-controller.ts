@@ -48,24 +48,25 @@ export async function createGroup(req: AuthenticatedRequest, res: Response) {
 
  try {
   const group = await groupService.createGroup(body, userId);
-  res.status(httpStatus.CREATED).send(group)
+  res.status(httpStatus.CREATED).send(group);
  } catch (error) {
-  if(error.name === "ConflictGroupName"){
-    return res.status(httpStatus.CONFLICT).send(error.message)
+  if (error.name === "ConflictGroupName") {
+   return res.status(httpStatus.CONFLICT).send(error.message);
   }
   res.status(httpStatus.BAD_REQUEST).send(error);
  }
 }
 
-export async function closeOpenGroup(req: AuthenticatedRequest, res: Response){
-  const {groupId} = req.params;
+export async function closeOpenGroup(req: AuthenticatedRequest, res: Response) {
+ const { groupId } = req.params;
 
-  try {
-    const data = await groupService.closeOpenGroup(parseInt(groupId));
-    res.status(httpStatus.OK).send(data);
-  } catch (error) {
-    res.status(httpStatus.NOT_FOUND).send(error)
-  }
+ try {
+  await groupService.closeOpenGroup(parseInt(groupId));
+  res.sendStatus(httpStatus.OK);
+ } catch (error) {
+  console.log(error)
+  res.status(httpStatus.NOT_FOUND).send(error);
+ }
 }
 
 type GroupNameChangeParams = {

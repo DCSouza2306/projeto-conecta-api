@@ -12,7 +12,9 @@ export async function can(
 ) {
  const { userId } = req;
  const { groupId } = req.params;
- const { permissions } = req.query as Record<string, string[]>;
+ const { permissions } = req.query as Record<string, string>;
+ const permissionArray = permissions.toString().split(",");
+ console.log(permissionArray)
 
  const user = await userRepository.findById(userId);
 
@@ -32,7 +34,7 @@ export async function can(
  //check if user have the permissions required to do this action
  const havePermission = group[0].Role.RolePermision.map((e) => {
   return e.Permision.name;
- }).some((e) => permissions?.includes(e));
+ }).some((e) => permissionArray?.includes(e));
 
  if (!havePermission) {
   return generateUnauthorizedResponse(res);

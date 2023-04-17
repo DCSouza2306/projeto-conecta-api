@@ -126,7 +126,7 @@ export type CreateGroupParams = {
  about: string;
  description: string;
  urlImage: string;
- status: "OPEN";
+ status: "OPEN" | "CLOSED";
 };
 
 export type ChangeNameGroupParams = {
