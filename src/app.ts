@@ -25,7 +25,7 @@ app
  .use("/sign-in", authenticationRoutes)
  .use("/member", memberRoutes)
  .use("/meeting", meetingRoutes)
- .use("/reading-list", bookListRoutes)
+ .use("/book-list", bookListRoutes)
 
 export function init(): Promise<Express> {
  connectDb();

@@ -65,10 +65,21 @@ async function createBook(params: CreateBookParams){
     const {title, authorId} = params;
     await validateTitle(title);
     await validateAuthor(authorId);
-
-    
-
    
+}
+
+async function getBookSearch(title: string){
+    const book = await bookRepository.getBookSearch(title);
+
+    const data = book.map((e) => {
+        return {
+            id: e.id,
+            title: e.title,
+            urlImage: e.urlImage,
+            author: e.Author.name
+        }
+    })
+    return data;
 }
 
 async function validateTitle(title: string){
@@ -90,9 +101,15 @@ const bookService = {
     getBooks,
     getBooksCount,
     getBookById,
-    createBook
+    createBook,
+    getBookSearch
 };
 
 export default bookService;
 
 export type CreateBookParams = Omit<Book, "id" | "createdAt" | "updatedAt" >
+
+
+export type BodySearchGroupParams = {
+    title: string
+}

@@ -4,6 +4,7 @@ import bookRepository from "../../repositories/book-repository";
 import { notFoundError } from "../../errors/not-found-error";
 import { conflictBookListError } from "./errors";
 import groupRepository from "../../repositories/group-repository";
+import { invalidDataError } from "../../errors/invalid-data-error";
 
 async function createBookList(params: CreateBookListParams) {
  const { groupId, bookId } = params;
@@ -108,3 +109,7 @@ export type CreateBookListParams = Omit<
  BookList,
  "id" | "createdAt" | "updatedAt"
 >;
+
+export type DeleteBookListParams = {
+    bookId: number
+}

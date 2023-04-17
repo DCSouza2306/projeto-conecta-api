@@ -2,6 +2,7 @@ import bookService, { CreateBookParams } from "../services/book-service";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { AuthenticatedRequest } from "../middlewares/authentication-middleware";
+import { BodySearchGroupParams } from "../services";
 
 export async function getBooks(req: Request, res: Response) {
  let { limit, offset } = req.query as Record<string, string>;
@@ -54,5 +55,16 @@ export async function createBook(req: AuthenticatedRequest, res: Response){
          return res.status(httpStatus.CONFLICT).send(error)
       }
       res.status(httpStatus.NOT_FOUND).send(error)
+   }
+}
+
+export async function getBookSearch(req: AuthenticatedRequest, res: Response){
+   const {title} = req.query as Record<string, string>
+   try {
+      const data = await bookService.getBookSearch(title);
+      res.status(httpStatus.OK).send(data);
+   } catch (error) {
+      console.log(error);
+      res.status(httpStatus.NOT_FOUND).send(error);
    }
 }

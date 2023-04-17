@@ -12,6 +12,6 @@ bookListRoutes
 .all("/*", authenticateToken)
 .post("/:groupId",can, validateBody(bookListSchema), createBookList)
 .put("/:groupId",can, validateBody(bookListSchema), updateBookList)
-.delete("/:groupId",can, validateBody(bookListSchema), deleteBookList)
+.delete("/:groupId",can, deleteBookList)
 
 export {bookListRoutes}

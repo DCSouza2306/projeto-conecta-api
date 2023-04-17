@@ -41,12 +41,28 @@ async function createBook(params: CreateBookParams){
     })
 }
 
+async function getBookSearch(title: string){
+    return prisma.book.findMany({
+        where: {
+            title:{
+                startsWith: title,
+                mode: "insensitive"
+            }
+        },
+        include:{
+            Author: true,
+        }
+    })
+
+}
+
 const bookRepository = {
  getBooks,
  booksCount,
  getBookById,
  getBookByTitle,
- createBook
+ createBook,
+ getBookSearch
 };
 
 export default bookRepository;

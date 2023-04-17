@@ -2,7 +2,7 @@ import { AuthenticatedRequest } from "../middlewares/authentication-middleware";
 import { Response } from "express";
 import httpStatus from "http-status";
 import bookListService, {
-    CreateBookListInputParams,
+    CreateBookListInputParams, DeleteBookListParams,
 } from "../services/book-list-service";
 
 export async function createBookList(req: AuthenticatedRequest, res: Response) {
@@ -41,11 +41,15 @@ export async function updateBookList(req: AuthenticatedRequest, res: Response){
 
 export async function deleteBookList(req: AuthenticatedRequest, res: Response){
     const {groupId} = req.params
-    const {userId} = req;
+    const {bookId} = req.query as Record<string, string>
 
     try {
-        
+        await bookListService.deleteBookList(parseInt(bookId), parseInt(groupId));
+        res.sendStatus(httpStatus.OK)
     } catch (error) {
-        res.status(httpStatus.BAD_REQUEST).send(error)
+        if(error.name === "InvalidDataError"){
+            return res.status(httpStatus.BAD_REQUEST).send(error)
+        }
+        res.status(httpStatus.NOT_FOUND).send(error)
     }
 }

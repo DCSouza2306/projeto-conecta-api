@@ -105,6 +105,8 @@ async function closeOpenGroup(groupId: number){
     }
 }
 
+
+
 async function validateGroupName(name: string) {
  const groupExist = await groupRepository.findByName(name);
 
@@ -118,7 +120,7 @@ const groupService = {
  getGroupById,
  putGroup,
  createGroup,
- closeOpenGroup
+ closeOpenGroup,
 };
 
 export type CreateGroupParams = {
@@ -132,5 +134,6 @@ export type CreateGroupParams = {
 export type ChangeNameGroupParams = {
     name: string
 }
+
 
 export default groupService;
