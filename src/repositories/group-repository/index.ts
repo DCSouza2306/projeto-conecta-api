@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { prisma } from "../../config";
 import { CreateGroupParams } from "../../services";
 
@@ -54,12 +55,34 @@ async function findByName(name: string){
     })
 }
 
+async function closeGroup(id: number){
+    return prisma.group.update({
+        where:{ id },
+        data:{
+            status: "CLOSED",
+            updatedAt: dayjs().toISOString()
+        }
+    })
+}
+
+async function openGroup(id: number){
+    return prisma.group.update({
+        where:{ id },
+        data:{
+            status: "OPEN",
+            updatedAt: dayjs().toISOString()
+        }
+    })
+}
+
 const groupRepository = {
  getAllGroups,
  getGroupById,
  putGroup,
  createGroup,
- findByName
+ findByName,
+ closeGroup,
+ openGroup
 };
 
 export default groupRepository;

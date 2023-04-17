@@ -87,6 +87,24 @@ async function createGroup(params: CreateGroupParams, userId: number) {
  return group;
 }
 
+async function closeOpenGroup(groupId: number){
+    const group = await groupRepository.getGroupById(groupId);
+
+    if(!group){
+        throw notFoundError();
+    }
+
+    if(group.status === "OPEN"){
+        await groupRepository.closeGroup(groupId);
+        return {}
+    }
+
+    if(group.status === "CLOSED"){
+        await groupRepository.openGroup(groupId);
+        return {}
+    }
+}
+
 async function validateGroupName(name: string) {
  const groupExist = await groupRepository.findByName(name);
 
@@ -100,6 +118,7 @@ const groupService = {
  getGroupById,
  putGroup,
  createGroup,
+ closeOpenGroup
 };
 
 export type CreateGroupParams = {

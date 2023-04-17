@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    closeOpenGroup,
  createGroup,
  getGroupById,
  getGroups,
@@ -22,6 +23,10 @@ groupRoutes
   validateBody(groupSchema),
   putGroup
  )
+ .put("/close-open/:groupId",
+ authenticateToken,
+ can,
+ closeOpenGroup)
  .post("/create", authenticateToken, validateBody(groupSchema), createGroup);
 
 export { groupRoutes };

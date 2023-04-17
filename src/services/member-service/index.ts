@@ -28,7 +28,7 @@ async function postMember(userId: number, groupId: number) {
 
 }
 
-async function updateStatusMember(groupId: number, userId: number){
+async function updateStatusMember(groupId: number, userId: number, status: "APROVED" | "DENIED"){
 
     const member = await memberRepository.getMemberGroupByUserId(userId, groupId);
 
@@ -36,7 +36,7 @@ async function updateStatusMember(groupId: number, userId: number){
         throw notFoundError();
     }
 
-    const updatedMember = await memberRepository.updateStatusMember(member.id);
+    const updatedMember = await memberRepository.updateStatusMember(member.id, status);
 
     return updatedMember;
 

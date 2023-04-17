@@ -57,6 +57,17 @@ export async function createGroup(req: AuthenticatedRequest, res: Response) {
  }
 }
 
+export async function closeOpenGroup(req: AuthenticatedRequest, res: Response){
+  const {groupId} = req.params;
+
+  try {
+    const data = await groupService.closeOpenGroup(parseInt(groupId));
+    res.status(httpStatus.OK).send(data);
+  } catch (error) {
+    res.status(httpStatus.NOT_FOUND).send(error)
+  }
+}
+
 type GroupNameChangeParams = {
  name: string;
 };

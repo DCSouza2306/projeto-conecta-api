@@ -33,10 +33,10 @@ export async function postMember(req: AuthenticatedRequest, res: Response){
 export async function updateStatusMember(req: AuthenticatedRequest, res: Response){
     const {groupId} = req.params;
 
-    const {userId} = req.body as UserIdParams;
+    const {userId, status} = req.body as UpdateUserParams;
 
     try {
-        const member = await memberService.updateStatusMember(parseInt(groupId), userId);
+        const member = await memberService.updateStatusMember(parseInt(groupId), userId, status);
         res.status(httpStatus.OK).send(member)
     } catch (error) {
         if(error.name == "NotFoundError"){
@@ -72,6 +72,11 @@ export async function changeRoleMember(req: AuthenticatedRequest, res: Response)
 
 type UserIdParams = {
     userId: number
+}
+
+type UpdateUserParams = {
+    userId: number,
+    status: "APROVED" | "DENIED"
 }
 
 type UserAndRoleIdParams = {

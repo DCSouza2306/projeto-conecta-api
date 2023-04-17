@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { prisma } from "../../config";
 
 async function getMemberGroupByUserId(userId: number, groupId: number) {
@@ -23,11 +24,12 @@ async function createMember(userId: number, groupId: number, roleId: number){
     })
 }
 
-async function updateStatusMember(id: number){
+async function updateStatusMember(id: number, status: "APROVED" | "DENIED"){
     return prisma.groupMember.update({
         where: {id},
         data: {
-            status: "APROVED"
+            status: status,
+            updatedAt: dayjs().toISOString()
         }
     })
 }
